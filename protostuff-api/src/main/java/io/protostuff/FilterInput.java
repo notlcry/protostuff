@@ -166,6 +166,11 @@ public class FilterInput<F extends Input> implements Input
         input.transferByteRangeTo(output, utf8String, fieldNumber, repeated);
     }
 
+    @Override
+    public String readString(int value) {
+        return null;
+    }
+
     /**
      * Reads a byte array/ByteBuffer value.
      */

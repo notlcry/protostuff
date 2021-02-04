@@ -38,14 +38,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
-import io.protostuff.ByteString;
-import io.protostuff.GraphInput;
-import io.protostuff.Input;
-import io.protostuff.Morph;
-import io.protostuff.Output;
-import io.protostuff.Pipe;
-import io.protostuff.Schema;
-import io.protostuff.Tag;
+import io.protostuff.*;
 import io.protostuff.WireFormat.FieldType;
 
 /**
@@ -744,13 +737,17 @@ public final class RuntimeUnsafeFieldFactory
         {
             final long offset = us.objectFieldOffset(f);
             return new Field<T>(FieldType.STRING, number, name,
-                    f.getAnnotation(Tag.class))
+                    f.getAnnotation(Tag.class), f.getAnnotation(FixedLength.class))
             {
                 @Override
                 public void mergeFrom(Input input, T message)
                         throws IOException
                 {
-                    us.putObject(message, offset, input.readString());
+                    if (f.getAnnotation(FixedLength.class) != null) {
+                        us.putObject(message, offset, input.readString(f.getAnnotation(FixedLength.class).value()));
+                    }else{
+                        us.putObject(message, offset, input.readString());
+                    }
                 }
 
                 @Override

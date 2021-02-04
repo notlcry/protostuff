@@ -140,4 +140,5 @@ public interface Input
     public void transferByteRangeTo(Output output, boolean utf8String, int fieldNumber,
             boolean repeated) throws IOException;
 
+    public String readString(int value);
 }

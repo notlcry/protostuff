@@ -661,6 +661,11 @@ public final class ByteArrayInput implements Input
         offset += length;
     }
 
+    @Override
+    public String readString(int value) {
+        return null;
+    }
+
     /**
      * Reads a byte array/ByteBuffer value.
      */

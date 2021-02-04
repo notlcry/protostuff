@@ -38,14 +38,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
-import io.protostuff.ByteString;
-import io.protostuff.GraphInput;
-import io.protostuff.Input;
-import io.protostuff.Morph;
-import io.protostuff.Output;
-import io.protostuff.Pipe;
-import io.protostuff.Schema;
-import io.protostuff.Tag;
+import io.protostuff.*;
 import io.protostuff.WireFormat.FieldType;
 
 /**
@@ -890,7 +883,7 @@ public final class RuntimeReflectionFieldFactory
                 final java.lang.reflect.Field f, IdStrategy strategy)
         {
             return new Field<T>(FieldType.STRING, number, name,
-                    f.getAnnotation(Tag.class))
+                    f.getAnnotation(Tag.class), f.getAnnotation(FixedLength.class))
             {
                 {
                     f.setAccessible(true);

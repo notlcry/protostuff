@@ -459,11 +459,8 @@
     <module>protostuff-runtime-md</module>
     <module>protostuff-runtime-registry</module>
     <module>protostuff-runtime-view</module>
-    <module>protostuff-json</module>
-    <module>protostuff-msgpack</module>    
-    <module>protostuff-xml</module>
-    <module>protostuff-yaml</module>
-    <module>protostuff-kvp</module>
+    <module>protostuff-msgpack</module>
+    <module>protostuff-cpe</module>
     <module>protostuff-parser</module>
     <module>protostuff-compiler</module>
     <module>protostuff-maven-plugin</module>

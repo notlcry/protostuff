@@ -2,11 +2,7 @@ package io.protostuff.runtime;
 
 import java.io.IOException;
 
-import io.protostuff.Input;
-import io.protostuff.Output;
-import io.protostuff.Pipe;
-import io.protostuff.Tag;
-import io.protostuff.WireFormat;
+import io.protostuff.*;
 
 /**
  * Represents a field of a message/pojo.
@@ -18,11 +14,12 @@ public abstract class Field<T>
     public final String name;
     public final boolean repeated;
     public final int groupFilter;
+    public final int fixedLength;
 
     // public final Tag tag;
 
     public Field(WireFormat.FieldType type, int number, String name, boolean repeated,
-            Tag tag)
+                 Tag tag, FixedLength fixedLength)
     {
         this.type = type;
         this.number = number;
@@ -30,13 +27,30 @@ public abstract class Field<T>
         this.repeated = repeated;
         this.groupFilter = tag == null ? 0 : tag.groupFilter();
         // this.tag = tag;
+        this.fixedLength = fixedLength == null ? 0: fixedLength.value();
     }
 
-    public Field(WireFormat.FieldType type, int number, String name, Tag tag)
+    public Field(WireFormat.FieldType type, int number, String name, boolean repeated,
+                 Tag tag)
     {
-        this(type, number, name, false, tag);
+        this.type = type;
+        this.number = number;
+        this.name = name;
+        this.repeated = repeated;
+        this.groupFilter = tag == null ? 0 : tag.groupFilter();
+        // this.tag = tag;
+        this.fixedLength = 0;
     }
-    
+
+    public Field(WireFormat.FieldType type, int number, String name, Tag tag, FixedLength fixedLength)
+    {
+        this(type, number, name, false, tag, fixedLength);
+    }
+
+    public Field(WireFormat.FieldType type, int number, String name, Tag tag) {
+        this(type, number, name, false, tag, null);
+    }
+
     /**
      * No copy by default.
      */

@@ -1272,6 +1272,11 @@ public final class CodedInput implements Input
         }
     }
 
+    @Override
+    public String readString(int value) {
+        return null;
+    }
+
     /**
      * Returns the last tag.
      */
