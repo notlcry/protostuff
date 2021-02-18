@@ -21,7 +21,7 @@ public class Usage {
 
 
     static void roundTrip() throws IOException {
-        Foo2 foo = new Foo2((short) 1,2, "sports");
+        Foo2 foo = new Foo2((short) 1,2, new byte[]{0x01, 0x02});
 
         // this is lazily created and cached by RuntimeSchema
         // so its safe to call RuntimeSchema.getSchema(Foo.class) over and over

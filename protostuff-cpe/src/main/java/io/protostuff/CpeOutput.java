@@ -19,10 +19,8 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
 /**
- * An output used for writing data with yaml format.
- * 
- * @author David Yu
- * @created Jun 27, 2010
+ *
+ * @author  huiyu
  */
 public final class CpeOutput extends WriteSession implements Output, StatefulOutput
 {
@@ -60,6 +58,7 @@ public final class CpeOutput extends WriteSession implements Output, StatefulOut
     };
 
     private static final byte EXCLAMATION = (byte) '!';
+    private static final char PLACEHOLDER = '0';
 
     private int indent = 0, lastNumber = 0;
 
@@ -218,34 +217,10 @@ public final class CpeOutput extends WriteSession implements Output, StatefulOut
     public void writeFloat(int fieldNumber, float value, boolean repeated) throws IOException
     {
         final WriteSink sink = this.sink;
-        if (lastNumber == fieldNumber)
-        {
-            // repeated
-            tail = sink.writeStrFromFloat(
-                    value,
-                    this,
-                    sink.writeByteArray(
-                            DASH_AND_SPACE,
-                            this,
-                            newLine(
-                                    inc(indent, 2),
-                                    sink,
-                                    this,
-                                    tail)));
-
-            return;
-        }
-
-        tail = sink.writeStrFromFloat(
+        tail = sink.writeFloat(
                 value,
                 this,
-                writeKey(
-                        schema.getFieldName(fieldNumber),
-                        indent,
-                        repeated,
-                        sink,
-                        this,
-                        tail));
+                tail);
 
         lastNumber = fieldNumber;
     }
@@ -301,41 +276,23 @@ public final class CpeOutput extends WriteSession implements Output, StatefulOut
     @Override
     public void writeFixed64(int fieldNumber, long value, boolean repeated) throws IOException
     {
-        writeInt64(fieldNumber, value, repeated);
+        final WriteSink sink = this.sink;
+        tail = sink.writeInt64(
+                value,
+                this,
+                tail);
+
+        lastNumber = fieldNumber;
     }
 
     @Override
     public void writeInt64(int fieldNumber, long value, boolean repeated) throws IOException
     {
         final WriteSink sink = this.sink;
-        if (lastNumber == fieldNumber)
-        {
-            // repeated
-            tail = sink.writeStrFromLong(
-                    value,
-                    this,
-                    sink.writeByteArray(
-                            DASH_AND_SPACE,
-                            this,
-                            newLine(
-                                    inc(indent, 2),
-                                    sink,
-                                    this,
-                                    tail)));
-
-            return;
-        }
-
-        tail = sink.writeStrFromLong(
+        tail = sink.writeInt64(
                 value,
                 this,
-                writeKey(
-                        schema.getFieldName(fieldNumber),
-                        indent,
-                        repeated,
-                        sink,
-                        this,
-                        tail));
+                tail);
 
         lastNumber = fieldNumber;
     }
@@ -361,12 +318,37 @@ public final class CpeOutput extends WriteSession implements Output, StatefulOut
     @Override
     public void writeString(int fieldNumber, CharSequence value, boolean repeated) throws IOException
     {
+        throw new RuntimeException("not support");
+    }
+    @Override
+    public void writeString(int fieldNumber, CharSequence value, boolean b, int length) throws IOException {
         final WriteSink sink = this.sink;
         tail = sink.writeStrUTF8(
-                value,
+                fillString(value, length),
                 this, tail
-                );
+        );
         lastNumber = fieldNumber;
+    }
+
+    /**
+     * use PLACEHOLDER at header to fill string to fixed length
+     * @param value
+     * @param length
+     * @return
+     */
+    private CharSequence fillString(CharSequence value, int length) {
+        if (value.length() > length) {
+            throw new RuntimeException("String length is larger then FixLength value");
+        }
+        if (value.length() == length) {
+            return value;
+        }else{
+            StringBuffer newSeq = new StringBuffer(length);
+            for (int i = 0; i < length - value.length(); i++) {
+                newSeq.append(PLACEHOLDER);
+            }
+            return newSeq.append(value);
+        }
     }
 
     @Override
@@ -378,38 +360,22 @@ public final class CpeOutput extends WriteSession implements Output, StatefulOut
     @Override
     public void writeByteArray(int fieldNumber, byte[] value, boolean repeated) throws IOException
     {
-        final WriteSink sink = this.sink;
-        if (lastNumber == fieldNumber)
-        {
-            // repeated
-            tail = sink.writeByteArrayB64(
-                    value,
-                    this,
-                    sink.writeByteArray(
-                            DASH_AND_SPACE,
-                            this,
-                            newLine(
-                                    inc(indent, 2),
-                                    sink,
-                                    this,
-                                    tail)));
+        throw new RuntimeException("not support");
+    }
 
-            return;
+    @Override
+    public void writeByteArray(int fieldNumber, byte[] value, boolean b, int length) throws IOException {
+        if (value.length != length){
+            throw new RuntimeException("byte array's length is not equals annotation");
         }
-
-        tail = sink.writeByteArrayB64(
+        final WriteSink sink = this.sink;
+        tail = sink.writeByteArray(
                 value,
-                this,
-                writeKey(
-                        schema.getFieldName(fieldNumber),
-                        indent,
-                        repeated,
-                        sink,
-                        this,
-                        tail));
-
+                this, tail
+        );
         lastNumber = fieldNumber;
     }
+
 
     @Override
     public void writeByteRange(boolean utf8String, int fieldNumber, byte[] value,

@@ -666,6 +666,11 @@ public final class ByteArrayInput implements Input
         return null;
     }
 
+    @Override
+    public byte[] readByteArray(int value) {
+        return new byte[0];
+    }
+
     /**
      * Reads a byte array/ByteBuffer value.
      */

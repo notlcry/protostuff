@@ -1277,6 +1277,11 @@ public final class CodedInput implements Input
         return null;
     }
 
+    @Override
+    public byte[] readByteArray(int value) {
+        return new byte[0];
+    }
+
     /**
      * Returns the last tag.
      */

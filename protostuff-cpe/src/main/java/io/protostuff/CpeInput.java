@@ -289,6 +289,13 @@ public final class CpeInput implements Input {
         return STRING.deser(tmp);
     }
 
+    @Override
+    public byte[] readByteArray(int len) {
+        byte[] tmp = new byte[len];
+        buffer.get(tmp);
+        return tmp;
+    }
+
     /**
      * Reads a byte array/ByteBuffer value.
      */

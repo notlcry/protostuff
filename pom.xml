@@ -459,7 +459,6 @@
     <module>protostuff-runtime-md</module>
     <module>protostuff-runtime-registry</module>
     <module>protostuff-runtime-view</module>
-    <module>protostuff-msgpack</module>
     <module>protostuff-cpe</module>
     <module>protostuff-parser</module>
     <module>protostuff-compiler</module>

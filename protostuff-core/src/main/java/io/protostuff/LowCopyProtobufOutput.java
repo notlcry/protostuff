@@ -194,4 +194,14 @@ public final class LowCopyProtobufOutput implements Output
         writeByteRange(false, fieldNumber, value.array(), value.arrayOffset() + value.position(),
                 value.remaining(), repeated);
     }
+
+    @Override
+    public void writeByteArray(int number, byte[] array, boolean b, int value) {
+
+    }
+
+    @Override
+    public void writeString(int number, CharSequence value, boolean b, int value1) {
+
+    }
 }

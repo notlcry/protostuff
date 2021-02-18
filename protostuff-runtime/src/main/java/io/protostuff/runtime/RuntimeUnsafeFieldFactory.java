@@ -415,7 +415,7 @@ public final class RuntimeUnsafeFieldFactory
         {
             final boolean primitive = f.getType().isPrimitive();
             final long offset = us.objectFieldOffset(f);
-            return new Field<T>(FieldType.INT64, number, name,
+            return new Field<T>(FieldType.FIXED64, number, name,
                     f.getAnnotation(Tag.class))
             {
                 @Override
@@ -434,7 +434,7 @@ public final class RuntimeUnsafeFieldFactory
                         throws IOException
                 {
                     if (primitive)
-                        output.writeInt64(number, us.getLong(message, offset),
+                        output.writeFixed64(number, us.getLong(message, offset),
                                 false);
                     else
                     {
@@ -755,8 +755,13 @@ public final class RuntimeUnsafeFieldFactory
                         throws IOException
                 {
                     CharSequence value = (CharSequence) us.getObject(message, offset);
-                    if (value != null)
-                        output.writeString(number, value, false);
+                    if (value != null){
+                        if (f.getAnnotation(FixedLength.class) != null) {
+                            output.writeString(number, value, false, f.getAnnotation(FixedLength.class).value());
+                        }else{
+                            output.writeString(number, value, false);                        }
+                    }
+
                 }
 
                 @Override
@@ -879,13 +884,17 @@ public final class RuntimeUnsafeFieldFactory
         {
             final long offset = us.objectFieldOffset(f);
             return new Field<T>(FieldType.BYTES, number, name,
-                    f.getAnnotation(Tag.class))
+                    f.getAnnotation(Tag.class), f.getAnnotation(FixedLength.class))
             {
                 @Override
                 public void mergeFrom(Input input, T message)
                         throws IOException
                 {
-                    us.putObject(message, offset, input.readByteArray());
+                    if (f.getAnnotation(FixedLength.class) != null) {
+                        us.putObject(message, offset, input.readByteArray(f.getAnnotation(FixedLength.class).value()));
+                    }else{
+                        us.putObject(message, offset, input.readByteArray());
+                    }
                 }
 
                 @Override
@@ -894,7 +903,11 @@ public final class RuntimeUnsafeFieldFactory
                 {
                     byte[] array = (byte[]) us.getObject(message, offset);
                     if (array != null)
+                    if (f.getAnnotation(FixedLength.class) != null) {
+                        output.writeByteArray(number, array, false,f.getAnnotation(FixedLength.class).value());
+                    }else{
                         output.writeByteArray(number, array, false);
+                    }
                 }
 
                 @Override

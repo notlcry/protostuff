@@ -125,4 +125,7 @@ public interface Output
 
     public void writeBytes(int fieldNumber, ByteBuffer value, boolean repeated) throws IOException;
 
+    void writeByteArray(int number, byte[] array, boolean b, int value) throws IOException;
+
+    void writeString(int number, CharSequence value, boolean b, int value1) throws IOException;
 }

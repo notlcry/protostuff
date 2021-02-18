@@ -141,4 +141,6 @@ public interface Input
             boolean repeated) throws IOException;
 
     public String readString(int value);
+
+    public byte[] readByteArray(int value);
 }

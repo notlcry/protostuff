@@ -3,7 +3,7 @@ package io.protostuff.test;
 public class Foo
 {
     short name;
-    int age;
+    long age;
 
     public Foo(short name, int age)
     {

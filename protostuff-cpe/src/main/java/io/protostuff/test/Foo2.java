@@ -2,12 +2,19 @@ package io.protostuff.test;
 
 import io.protostuff.FixedLength;
 
+import java.util.Arrays;
+
 public class Foo2 extends Foo {
 
-    @FixedLength(6)
-    String habit;
+    @FixedLength(2)
+    byte[] habit;
 
-    public Foo2(short name, int age, String habit) {
+    @FixedLength(10)
+    String vid = "123";
+
+    float rate = 1.2f;
+
+    public Foo2(short name, int age, byte[] habit) {
         super(name, age);
         this.habit = habit;
     }
@@ -15,7 +22,9 @@ public class Foo2 extends Foo {
     @Override
     public String toString() {
         return "Foo2{" +
-                "habit='" + habit + '\'' +
+                "habit=" + Arrays.toString(habit) +
+                ", vid='" + vid + '\'' +
+                ", rate=" + rate +
                 ", name=" + name +
                 ", age=" + age +
                 '}';

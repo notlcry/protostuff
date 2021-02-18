@@ -328,4 +328,14 @@ public final class DeferredOutput implements Output
                 value.remaining(), repeated);
     }
 
+    @Override
+    public void writeByteArray(int number, byte[] array, boolean b, int value) {
+
+    }
+
+    @Override
+    public void writeString(int number, CharSequence value, boolean b, int value1) {
+
+    }
+
 }
