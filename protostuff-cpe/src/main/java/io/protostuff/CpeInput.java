@@ -18,6 +18,9 @@ import io.protostuff.StringSerializer.STRING;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Reads and decodes protocol buffer message fields from an internal byte array buffer. This object is re-usable via
@@ -35,6 +38,9 @@ public final class CpeInput implements Input {
     // private int offset, limit, lastTag = 0;
     private final int packedLimit = 0;
     private int fieldNumber = 1;
+    private int arraySize = 2;
+    private boolean inArray = false;
+
 
 
     public CpeInput(ByteBuffer buffer) {
@@ -112,7 +118,48 @@ public final class CpeInput implements Input {
             lastTag = 0;
             return 0;
         }
+
+        if (inArray) {
+            return fieldNumber - 1;
+        }
         return fieldNumber++;
+
+//        if (!buffer.hasRemaining())
+//        {
+//            lastTag = 0;
+//            return 0;
+//        }
+//
+//        // are we reading packed field?
+//        if (isCurrentFieldPacked())
+//        {
+//            return lastTag >>> TAG_TYPE_BITS;
+//        }
+//
+//        packedLimit = 0;
+//        final int tag = readRawVarint32();
+//        final int fieldNumber = tag >>> TAG_TYPE_BITS;
+//        if (fieldNumber == 0)
+//        {
+//            if (decodeNestedMessageAsGroup &&
+//                    WIRETYPE_TAIL_DELIMITER == (tag & TAG_TYPE_MASK))
+//            {
+//                // protostuff's tail delimiter for streaming
+//                // 2 options: length-delimited or tail-delimited.
+//                lastTag = 0;
+//                return 0;
+//            }
+//            // If we actually read zero, that's not a valid tag.
+//            throw ProtobufException.invalidTag();
+//        }
+//        if (decodeNestedMessageAsGroup && WIRETYPE_END_GROUP == (tag & TAG_TYPE_MASK))
+//        {
+//            lastTag = 0;
+//            return 0;
+//        }
+//
+//        lastTag = tag;
+//        return fieldNumber;
     }
 
 
@@ -253,7 +300,46 @@ public final class CpeInput implements Input {
 
     @Override
     public <T> T mergeObject(T value, final Schema<T> schema) throws IOException {
-        throw new ProtostuffException("not support Object.");
+//        throw new ProtostuffException("not support Object.");
+
+
+        if (value == null)
+            value = schema.newMessage();
+        byte[] buf = new byte[5];
+        buffer.get(buf);
+        ByteBuffer byteBuffer = ByteBuffer.wrap(buf);
+        CpeInput input = new CpeInput(byteBuffer);
+        schema.mergeFrom(input, value);
+        if (!schema.isInitialized(value))
+            throw new UninitializedMessageException(value, schema);
+
+        arraySize--;
+        if (arraySize != 0) {
+            inArray = true;
+        }else{
+            inArray = false;
+        }
+        return value;
+    }
+
+    @Override
+    public <T> Collection<T> mergeObjectArray(T value, final Schema<T> schema, int length, int size) throws IOException {
+//        throw new ProtostuffException("not support Object.");
+
+        List<T> collect = new ArrayList<>();
+
+        for (int i = 0; i < size; i++) {
+            T  item = schema.newMessage();
+            byte[] buf = new byte[length];
+            buffer.get(buf);
+            ByteBuffer byteBuffer = ByteBuffer.wrap(buf);
+            CpeInput input = new CpeInput(byteBuffer);
+            schema.mergeFrom(input, item);
+            if (!schema.isInitialized(item))
+                throw new UninitializedMessageException(item, schema);
+            collect.add(item);
+        }
+        return collect;
     }
 
 

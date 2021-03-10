@@ -263,7 +263,8 @@ public final class RuntimeUnsafeFieldFactory
                         throws IOException
                 {
                     if (primitive)
-                        us.putByte(message, offset, (byte) input.readUInt32());
+                        // TODO:  use readByte instead
+                        us.putByte(message, offset, input.readByteArray(1)[0]);
                     else
                         us.putObject(message, offset,
                                 Byte.valueOf((byte) input.readUInt32()));
@@ -274,8 +275,9 @@ public final class RuntimeUnsafeFieldFactory
                         throws IOException
                 {
                     if (primitive)
-                        output.writeUInt32(number, us.getByte(message, offset),
-                                false);
+                        // TODO:  use writeByte instead
+                        output.writeByteArray(number, new byte[]{us.getByte(message, offset)},
+                                false, 1);
                     else
                     {
                         Byte value = (Byte) us.getObject(message, offset);

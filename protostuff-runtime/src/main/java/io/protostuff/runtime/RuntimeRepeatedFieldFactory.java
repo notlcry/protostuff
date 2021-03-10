@@ -15,19 +15,13 @@
 package io.protostuff.runtime;
 
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Map;
 
+import io.protostuff.*;
 import io.protostuff.CollectionSchema.MessageFactory;
-import io.protostuff.GraphInput;
-import io.protostuff.Input;
-import io.protostuff.Message;
-import io.protostuff.Morph;
-import io.protostuff.Output;
-import io.protostuff.Pipe;
-import io.protostuff.Schema;
-import io.protostuff.Tag;
 import io.protostuff.WireFormat.FieldType;
 
 /**
@@ -154,12 +148,34 @@ final class RuntimeRepeatedFieldFactory
             @Override
             protected void mergeFrom(Input input, T message) throws IOException
             {
-                final Object value = input.mergeObject(null, getSchema());
-                Collection<Object> existing = accessor.get(message);
-                if (existing == null)
-                    accessor.set(message, existing = messageFactory.newMessage());
-                
-                existing.add(value);
+                int size = -1;
+                if (f.getAnnotation(ArrayDetail.class).sizeField().equals(ArraySizeType.FIXED)){
+                    size = f.getAnnotation(ArrayDetail.class).size();
+                }else{
+                    size = getSizeFromField(message, f.getAnnotation(ArrayDetail.class).sizeField());
+                }
+                if (size < 0) {
+                    throw new InvalidObjectException("array size field is invalid");
+                }
+                final Object value = input.mergeObjectArray(null, getSchema(),
+                        f.getAnnotation(ArrayDetail.class).length(), size);
+                accessor.set(message, value);
+            }
+
+            private int getSizeFromField(T message, String sizeField) {
+                Number size = -1;
+
+                java.lang.reflect.Field field = null;
+                try {
+                    field = message.getClass().getDeclaredField(sizeField);
+                    field.setAccessible(true);
+                    size = (Number) field.get(message);
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                return size.intValue();
             }
 
             @Override

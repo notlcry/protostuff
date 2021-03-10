@@ -34,6 +34,10 @@ abstract class RuntimeMessageField<T, P> extends Field<T>
     public final Class<P> typeClass;
 
     final HasSchema<P> hasSchema;
+//
+//    private int size;
+//
+//    private int length;
 
     public RuntimeMessageField(Class<P> typeClass, HasSchema<P> hasSchema,
             FieldType type, int number, String name, boolean repeated, Tag tag)
@@ -42,6 +46,16 @@ abstract class RuntimeMessageField<T, P> extends Field<T>
         this.typeClass = typeClass;
         this.hasSchema = hasSchema;
     }
+//
+//    public RuntimeMessageField(Class<P> typeClass, HasSchema<P> hasSchema,
+//                               FieldType type, int number, String name, boolean repeated, Tag tag, int length, int size)
+//    {
+//        super(type, number, name, repeated, tag);
+//        this.typeClass = typeClass;
+//        this.hasSchema = hasSchema;
+//        this.length = length;
+//        this.size = size;
+//    }
 
     /**
      * Returns the schema.

@@ -16,6 +16,7 @@ package io.protostuff;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Collection;
 
 /**
  * A FilterInput contains some other {@link Input input}, which it uses as its basic source of data.
@@ -157,6 +158,11 @@ public class FilterInput<F extends Input> implements Input
     public <T> T mergeObject(T value, Schema<T> schema) throws IOException
     {
         return input.mergeObject(value, schema);
+    }
+
+    @Override
+    public <T> Collection<T> mergeObjectArray(T value, Schema<T> schema, int length, int size) throws IOException {
+        return null;
     }
 
     @Override

@@ -1,5 +1,3 @@
-package io.protostuff.test;
-
 public class Foo
 {
     short name;

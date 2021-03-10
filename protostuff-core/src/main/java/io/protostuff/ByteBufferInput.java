@@ -29,6 +29,7 @@ import static io.protostuff.WireFormat.makeTag;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Collection;
 
 import io.protostuff.StringSerializer.STRING;
 
@@ -521,6 +522,11 @@ public final class ByteBufferInput implements Input
 
         buffer.position(buffer.position() + length);
         return value;
+    }
+
+    @Override
+    public <T> Collection<T> mergeObjectArray(T value, Schema<T> schema, int length, int size) throws IOException {
+        return null;
     }
 
     private <T> T mergeObjectEncodedAsGroup(T value, final Schema<T> schema) throws IOException

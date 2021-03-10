@@ -1,4 +1,4 @@
-package io.protostuff.test;
+package barry;
 
 import io.protostuff.FixedLength;
 

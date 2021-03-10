@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import io.protostuff.StringSerializer.STRING;
@@ -340,6 +341,11 @@ public final class CodedInput implements Input
         // --recursionDepth;
         popLimit(oldLimit);
         return value;
+    }
+
+    @Override
+    public <T> Collection<T> mergeObjectArray(T value, Schema<T> schema, int length, int size) throws IOException {
+        return null;
     }
 
     /**

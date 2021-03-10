@@ -1,13 +1,13 @@
-package io.protostuff.test;
+package barry;
 
-import io.protostuff.CpeIOUtil;
 import io.protostuff.LinkedBuffer;
+import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
 import io.protostuff.runtime.RuntimeSchema;
 
 import java.io.IOException;
 
-public class Usage {
+public class TestListCore {
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
     public static String bytesToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
@@ -21,25 +21,24 @@ public class Usage {
 
 
     static void roundTrip() throws IOException {
-        Foo2 foo = new Foo2((short) 1,2, new byte[]{0x01, 0x02});
-
-        // this is lazily created and cached by RuntimeSchema
-        // so its safe to call RuntimeSchema.getSchema(Foo.class) over and over
-        // The getSchema method is also thread-safe
-        Schema<? extends Foo> schema = RuntimeSchema.getSchema(foo.getClass());
+        Foo3 foo = new Foo3();
+        Course course1 = new Course((byte) 1, 10);
+        Course course2 = new Course((byte) 2, 20);
+        foo.getCourses().add(course1);
+        foo.getCourses().add(course2);
+        Schema<Foo3> schema = RuntimeSchema.getSchema(Foo3.class);
 
         // Re-use (manage) this buffer to avoid allocating on every serialization
         LinkedBuffer buffer = LinkedBuffer.allocate(512);
 
         // ser
-        // ser
         final byte[] protostuff;
         try
         {
-            protostuff = CpeIOUtil.toByteArray(foo, schema, buffer);
+            protostuff = ProtostuffIOUtil.toByteArray(foo, schema, buffer);
             System.out.println(bytesToHex(protostuff));
-            Foo2 fooParsed = (Foo2) schema.newMessage();
-            CpeIOUtil.mergeFrom(protostuff, fooParsed, schema);
+            Foo3 fooParsed = schema.newMessage();
+            ProtostuffIOUtil.mergeFrom(protostuff, fooParsed, schema);
             System.out.println(fooParsed);
         }catch (Exception e){
             e.printStackTrace();

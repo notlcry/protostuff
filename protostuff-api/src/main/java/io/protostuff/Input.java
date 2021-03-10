@@ -16,6 +16,7 @@ package io.protostuff;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Collection;
 
 /**
  * An Input lets an application read primitive data types and objects from a source of data.
@@ -133,6 +134,8 @@ public interface Input
      * object.
      */
     public <T> T mergeObject(T value, Schema<T> schema) throws IOException;
+
+    <T> Collection<T> mergeObjectArray(T value, Schema<T> schema, int length, int size) throws IOException;
 
     /**
      * Transfer the byte range to the output. Capable of zero-copy transfer depending on the type of input.
