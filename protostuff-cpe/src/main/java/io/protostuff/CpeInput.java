@@ -38,8 +38,6 @@ public final class CpeInput implements Input {
     // private int offset, limit, lastTag = 0;
     private final int packedLimit = 0;
     private int fieldNumber = 1;
-    private int arraySize = 2;
-    private boolean inArray = false;
 
 
 
@@ -118,10 +116,6 @@ public final class CpeInput implements Input {
             lastTag = 0;
             return 0;
         }
-
-        if (inArray) {
-            return fieldNumber - 1;
-        }
         return fieldNumber++;
 
 //        if (!buffer.hasRemaining())
@@ -168,7 +162,8 @@ public final class CpeInput implements Input {
      */
     @Override
     public double readDouble() throws IOException {
-        return Double.longBitsToDouble(readRawLittleEndian64());
+        return buffer.getDouble();
+//        return Double.longBitsToDouble(readSFixed64());
     }
 
     /**
@@ -312,13 +307,6 @@ public final class CpeInput implements Input {
         schema.mergeFrom(input, value);
         if (!schema.isInitialized(value))
             throw new UninitializedMessageException(value, schema);
-
-        arraySize--;
-        if (arraySize != 0) {
-            inArray = true;
-        }else{
-            inArray = false;
-        }
         return value;
     }
 

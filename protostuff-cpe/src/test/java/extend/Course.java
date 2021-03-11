@@ -1,3 +1,5 @@
+package extend;
+
 public class Course {
     private byte id;
     private int source;
@@ -25,9 +27,27 @@ public class Course {
 
     @Override
     public String toString() {
-        return "Course{" +
+        return "has.Course{" +
                 "id=" + id +
                 ", source=" + source +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Course course = (Course) o;
+
+        if (id != course.id) return false;
+        return source == course.source;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + source;
+        return result;
     }
 }

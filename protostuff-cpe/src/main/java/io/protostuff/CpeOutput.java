@@ -181,34 +181,10 @@ public final class CpeOutput extends WriteSession implements Output, StatefulOut
     public void writeDouble(int fieldNumber, double value, boolean repeated) throws IOException
     {
         final WriteSink sink = this.sink;
-        if (lastNumber == fieldNumber)
-        {
-            // repeated
-            tail = sink.writeStrFromDouble(
-                    value,
-                    this,
-                    sink.writeByteArray(
-                            DASH_AND_SPACE,
-                            this,
-                            newLine(
-                                    inc(indent, 2),
-                                    sink,
-                                    this,
-                                    tail)));
-
-            return;
-        }
-
-        tail = sink.writeStrFromDouble(
+        tail = sink.writeDouble(
                 value,
                 this,
-                writeKey(
-                        schema.getFieldName(fieldNumber),
-                        indent,
-                        repeated,
-                        sink,
-                        this,
-                        tail));
+                tail);
 
         lastNumber = fieldNumber;
     }

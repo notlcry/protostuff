@@ -1,3 +1,5 @@
+package extend;
+
 import io.protostuff.FixedLength;
 
 import java.util.Arrays;
@@ -19,7 +21,7 @@ public class Foo2 extends Foo {
 
     @Override
     public String toString() {
-        return "Foo2{" +
+        return "has.Foo2{" +
                 "habit=" + Arrays.toString(habit) +
                 ", vid='" + vid + '\'' +
                 ", rate=" + rate +
