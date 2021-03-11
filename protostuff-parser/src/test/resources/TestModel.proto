@@ -4,7 +4,7 @@ option optimize_for = LITE_RUNTIME;
 option java_package = "com.example.simple";
 option java_outer_classname = "Simple";
 
-message Foo {
+message extend.Foo {
   enum EnumSample {
     TYPE0 = 0;
     TYPE1 = 1;

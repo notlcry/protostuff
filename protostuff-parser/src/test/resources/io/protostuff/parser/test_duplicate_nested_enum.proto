@@ -1,6 +1,6 @@
 package testdup;
 
-message Foo {
+message extend.Foo {
 
   enum Bar {
     BAZ = 3;

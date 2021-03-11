@@ -48,8 +48,8 @@ final class RuntimeRepeatedFieldFactory
     static final Accessor.Factory AF = RuntimeFieldFactory.ACCESSOR_FACTORY;
 
     private static <T> Field<T> createCollectionInlineV(int number,
-            String name, java.lang.reflect.Field f,
-            final MessageFactory messageFactory, final Delegate<Object> inline)
+                                                        String name, final java.lang.reflect.Field f,
+                                                        final MessageFactory messageFactory, final Delegate<Object> inline)
     {
         final Accessor accessor = AF.create(f);
         return new Field<T>(inline.getFieldType(), number, name, true,
@@ -58,13 +58,53 @@ final class RuntimeRepeatedFieldFactory
             @Override
             protected void mergeFrom(Input input, T message) throws IOException
             {
-                final Object value = inline.readFrom(input);
-                Collection<Object> existing = accessor.get(message);
-                if (existing == null)
-                    accessor.set(message, existing = messageFactory.newMessage());
-                
-                existing.add(value);
+                int size;
+                if (f.getAnnotation(ArrayDetail.class) == null) {
+                    throw new InvalidObjectException("list field must has ArrayDetail annotation");
+                }
+
+                if (f.getAnnotation(ArrayDetail.class).sizeType().equals(ArraySizeType.FIXED)){
+                    size = f.getAnnotation(ArrayDetail.class).size();
+                }else{
+                    size = getSizeFromField(message, f.getAnnotation(ArrayDetail.class).sizeField());
+                }
+                if (size < 0) {
+                    throw new InvalidObjectException("array size field is invalid");
+                }
+                Collection<Object> arrays = messageFactory.newMessage();
+                for (int i = 0; i < size; i++) {
+                    final Object value = inline.readFrom(input);
+                    arrays.add(value);
+                }
+                accessor.set(message, arrays);
             }
+
+            private int getSizeFromField(T message, String sizeField) {
+                Number size = -1;
+
+                java.lang.reflect.Field field = null;
+                try {
+                    field = message.getClass().getDeclaredField(sizeField);
+                    field.setAccessible(true);
+                    size = (Number) field.get(message);
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                return size.intValue();
+            }
+//
+//            @Override
+//            protected void mergeFrom(Input input, T message) throws IOException
+//            {
+//                final Object value = inline.readFrom(input);
+//                Collection<Object> existing = accessor.get(message);
+//                if (existing == null)
+//                    accessor.set(message, existing = messageFactory.newMessage());
+//
+//                existing.add(value);
+//            }
 
             @Override
             protected void writeTo(Output output, T message) throws IOException
@@ -148,8 +188,12 @@ final class RuntimeRepeatedFieldFactory
             @Override
             protected void mergeFrom(Input input, T message) throws IOException
             {
-                int size = -1;
-                if (f.getAnnotation(ArrayDetail.class).sizeField().equals(ArraySizeType.FIXED)){
+                int size;
+                if (f.getAnnotation(ArrayDetail.class) == null) {
+                    throw new InvalidObjectException("list field must has ArrayDetail annotation");
+                }
+
+                if (f.getAnnotation(ArrayDetail.class).sizeType().equals(ArraySizeType.FIXED)){
                     size = f.getAnnotation(ArrayDetail.class).size();
                 }else{
                     size = getSizeFromField(message, f.getAnnotation(ArrayDetail.class).sizeField());

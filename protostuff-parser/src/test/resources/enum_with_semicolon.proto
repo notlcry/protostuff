@@ -5,7 +5,7 @@ enum Bar {
     TWO = 2;
 };
 
-message Foo {
+message extend.Foo {
     enum Baz {
         THREE = 3;
         FOUR = 4;

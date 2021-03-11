@@ -1,13 +1,13 @@
 package testdup;
 
-enum Foo {
+enum extend.Foo {
 
   A = 1;
   B = 2;
 
 }
 
-enum Foo {
+enum extend.Foo {
   
   C = 3;
   D = 4;

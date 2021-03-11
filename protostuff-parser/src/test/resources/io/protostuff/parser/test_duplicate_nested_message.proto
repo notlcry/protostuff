@@ -1,6 +1,6 @@
 package testdup;
 
-message Foo {
+message extend.Foo {
 
   message Bar {
     optional int32 foo = 1;

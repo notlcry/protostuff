@@ -136,7 +136,7 @@ field_write_output(field, options) ::= <<
 <if(field.repeated)>
 <field:repeated_field_write(field=it, options=options)>
 <else>
-if(message.has<field.name; format="PC">())
+if(message.extend<field.name; format="PC">())
     <field:singular_field_write(field=it, options=options)>
 <endif>
 >>

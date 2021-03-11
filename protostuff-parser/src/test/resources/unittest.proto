@@ -387,7 +387,7 @@ message TestMutualRecursionB {
 // in protobuf_unittest_proto.
 message TestDupFieldNumber {                        // NO_PROTO1
   optional int32 a = 1;                             // NO_PROTO1
-  optional group Foo = 2 { optional int32 a = 1; }  // NO_PROTO1
+  optional group extend.Foo = 2 { optional int32 a = 1; }  // NO_PROTO1
   optional group Bar = 3 { optional int32 a = 1; }  // NO_PROTO1
 }                                                   // NO_PROTO1
 
@@ -402,7 +402,7 @@ message TestNestedMessageHasBits {
 }
 
 
-// Test an enum that has multiple values with the same number.
+// Test an enum that extend multiple values with the same number.
 enum TestEnumWithDupValue {
   option allow_alias = true;
   FOO1 = 1;
@@ -604,7 +604,7 @@ message FooRequest  {}
 message FooResponse {}
 
 service TestService {
-  rpc Foo(FooRequest) returns (FooResponse);
+  rpc extend.Foo(FooRequest) returns (FooResponse);
   rpc Bar(BarRequest) returns (BarResponse);
 }
 

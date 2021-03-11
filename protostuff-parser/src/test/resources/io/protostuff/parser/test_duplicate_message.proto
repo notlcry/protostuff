@@ -1,12 +1,12 @@
 package testdup;
 
-message Foo {
+message extend.Foo {
 
   optional int32 id = 1;
 
 }
 
-message Foo {
+message extend.Foo {
 
   optional string bar = 2;
 

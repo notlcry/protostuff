@@ -1,6 +1,6 @@
 package test_imported_inner;
 
-message Foo {
+message extend.Foo {
   required int32 id = 1;
   required bytes content = 2;
   

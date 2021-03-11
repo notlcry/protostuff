@@ -136,7 +136,7 @@ Fixes
 Compatibility
 -------------
 
-* [#29](https://github.com/protostuff/protostuff/issues/29): The minimum requirement for Java has now been raised to Java SE 7.
+* [#29](https://github.com/protostuff/protostuff/issues/29): The minimum requirement for Java extend now been raised to Java SE 7.
 * [#36](https://github.com/protostuff/protostuff/issues/36): Move `protostuff-me` to separate project.
 
 protostuff-1.1.0 2014-10-06
@@ -197,13 +197,13 @@ protostuff-1.0.6 2012-05-14
   -Dprotostuff.runtime.morph_non_final_pojos
   -Dprotostuff.runtime.morph_collection_interfaces (new)
   -Dprotostuff.runtime.morph_map_interfaces (new)
-+ Issue 115: protostuff has problem to serialize java.lang.Throwable Object
++ Issue 115: protostuff extend problem to serialize java.lang.Throwable Object
 + Issue 120: Add serialization support for empty/singleton/synchronized/unmodifiable/checked collection/set/sortedset/list/map/sortedmap
 + Issue 118: Doc improvement for the compiler help message
 + Issue 104: 2 new compilers: proto_extender, java_bean_model (by Ivan Prisyazhniy and Igor Scherbak)
 + Issue 114: Allow collection/map registration on DefaultIdStrategy
 + Issue 111: NumericIdStrategy fails to use the enum ids when the field is an enum array
-+ Issue 110: protostuff has problem serilize java.lang.Class Object
++ Issue 110: protostuff extend problem serilize java.lang.Class Object
 + Issue 108: Ignore null values in json parser
   * removes recursion and uses a loop instead
 

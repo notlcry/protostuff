@@ -7,46 +7,46 @@ message Request {
   required int32 id = 1;
   required bytes content = 2;
   
-  optional Foo foo1 = 3;
-  optional test_imported_inner.Foo foo2 = 4;
+  optional extend.Foo foo1 = 3;
+  optional test_imported_inner.extend.Foo foo2 = 4;
   optional test.imported.jp.JPFoo foo3 = 5;
     
-  optional Foo.Inner inner1 = 6;
-  optional test_imported_inner.Foo.Inner inner2 = 7;
+  optional extend.Foo.Inner inner1 = 6;
+  optional test_imported_inner.extend.Foo.Inner inner2 = 7;
   optional test.imported.jp.JPFoo.Inner inner3 = 8;
     
-  optional Foo.Inner.Deeper deeper1 = 9;
-  optional test_imported_inner.Foo.Inner.Deeper deeper2 = 10;
+  optional extend.Foo.Inner.Deeper deeper1 = 9;
+  optional test_imported_inner.extend.Foo.Inner.Deeper deeper2 = 10;
   optional test.imported.jp.JPFoo.Inner.Deeper deeper3 = 11;
   
   message Inner {
     required string name = 1;
     
-    optional Foo foo1 = 3;
-    optional test_imported_inner.Foo foo2 = 4;
+    optional extend.Foo foo1 = 3;
+    optional test_imported_inner.extend.Foo foo2 = 4;
     optional test.imported.jp.JPFoo foo3 = 5;
     
-    optional Foo.Inner inner1 = 6;
-    optional test_imported_inner.Foo.Inner inner2 = 7;
+    optional extend.Foo.Inner inner1 = 6;
+    optional test_imported_inner.extend.Foo.Inner inner2 = 7;
     optional test.imported.jp.JPFoo.Inner inner3 = 8;
     
-    optional Foo.Inner.Deeper deeper1 = 9;
-    optional test_imported_inner.Foo.Inner.Deeper deeper2 = 10;
+    optional extend.Foo.Inner.Deeper deeper1 = 9;
+    optional test_imported_inner.extend.Foo.Inner.Deeper deeper2 = 10;
     optional test.imported.jp.JPFoo.Inner.Deeper deeper3 = 11;
     
     message Deeper {
       required string name = 1;
       
-      optional Foo foo1 = 3;
-      optional test_imported_inner.Foo foo2 = 4;
+      optional extend.Foo foo1 = 3;
+      optional test_imported_inner.extend.Foo foo2 = 4;
       optional test.imported.jp.JPFoo foo3 = 5;
       
-      optional Foo.Inner inner1 = 6;
-      optional test_imported_inner.Foo.Inner inner2 = 7;
+      optional extend.Foo.Inner inner1 = 6;
+      optional test_imported_inner.extend.Foo.Inner inner2 = 7;
       optional test.imported.jp.JPFoo.Inner inner3 = 8;
       
-      optional Foo.Inner.Deeper deeper1 = 9;
-      optional test_imported_inner.Foo.Inner.Deeper deeper2 = 10;
+      optional extend.Foo.Inner.Deeper deeper1 = 9;
+      optional test_imported_inner.extend.Foo.Inner.Deeper deeper2 = 10;
       optional test.imported.jp.JPFoo.Inner.Deeper deeper3 = 11;
     }
   }

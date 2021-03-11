@@ -34,14 +34,14 @@ For more information, go to https://protostuff.github.io/docs/
   </dependency>
   ```
 
-## Usage
+## extend.Usage
 ```java
-public final class Foo
+public final class extend.Foo
 {
     String name;
     int id;
     
-    public Foo(String name, int id)
+    public extend.Foo(String name, int id)
     {
         this.name = name;
         this.id = id;
@@ -50,12 +50,12 @@ public final class Foo
 
 static void roundTrip()
 {
-    Foo foo = new Foo("foo", 1);
+    extend.Foo foo = new extend.Foo("foo", 1);
 
     // this is lazily created and cached by RuntimeSchema
-    // so its safe to call RuntimeSchema.getSchema(Foo.class) over and over
+    // so its safe to call RuntimeSchema.getSchema(extend.Foo.class) over and over
     // The getSchema method is also thread-safe
-    Schema<Foo> schema = RuntimeSchema.getSchema(Foo.class);
+    Schema<extend.Foo> schema = RuntimeSchema.getSchema(extend.Foo.class);
 
     // Re-use (manage) this buffer to avoid allocating on every serialization
     LinkedBuffer buffer = LinkedBuffer.allocate(512);
@@ -72,7 +72,7 @@ static void roundTrip()
     }
 
     // deser
-    Foo fooParsed = schema.newMessage();
+    extend.Foo fooParsed = schema.newMessage();
     ProtostuffIOUtil.mergeFrom(protostuff, fooParsed, schema);
 }
 ```
@@ -98,7 +98,7 @@ static final DefaultIdStrategy STRATEGY = new DefaultIdStrategy(IdStrategy.DEFAU
 
 Use it:
 ```java
-Schema<Foo> schema = RuntimeSchema.getSchema(Foo.class, STRATEGY);
+Schema<extend.Foo> schema = RuntimeSchema.getSchema(extend.Foo.class, STRATEGY);
 ```
 
 Questions/Concerns/Suggestions
