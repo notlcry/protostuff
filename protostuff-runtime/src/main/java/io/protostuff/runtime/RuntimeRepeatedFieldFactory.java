@@ -202,7 +202,7 @@ final class RuntimeRepeatedFieldFactory
                     throw new InvalidObjectException("array size field is invalid");
                 }
                 final Object value = input.mergeObjectArray(null, getSchema(),
-                        f.getAnnotation(ArrayDetail.class).length(), size);
+                         size);
                 accessor.set(message, value);
             }
 

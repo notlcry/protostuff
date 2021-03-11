@@ -10,7 +10,7 @@ public class Foo4 extends Foo{
 
     private short courseSize;
 
-    @ArrayDetail(sizeType = ArraySizeType.FIELD_DEFINE, length = 5, sizeField = "courseSize")
+    @ArrayDetail(sizeType = ArraySizeType.FIELD_DEFINE, sizeField = "courseSize")
     private List<Course> courses = new ArrayList<>();
     private float rate;
 

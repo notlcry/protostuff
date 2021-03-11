@@ -135,7 +135,7 @@ public interface Input
      */
     public <T> T mergeObject(T value, Schema<T> schema) throws IOException;
 
-    <T> Collection<T> mergeObjectArray(T value, Schema<T> schema, int length, int size) throws IOException;
+    <T> Collection<T> mergeObjectArray(T value, Schema<T> schema, int size) throws IOException;
 
     /**
      * Transfer the byte range to the output. Capable of zero-copy transfer depending on the type of input.

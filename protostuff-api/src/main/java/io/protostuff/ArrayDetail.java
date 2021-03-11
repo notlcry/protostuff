@@ -44,11 +44,6 @@ public @interface ArrayDetail
 {
 
     ArraySizeType sizeType() default ArraySizeType.FIXED;
-    /**
-     *
-      * @return length of one item
-     */
-    int length();
 
     /**
      *
@@ -56,5 +51,9 @@ public @interface ArrayDetail
      */
     int size() default 1;
 
+    /**
+     *
+     * @return size field of array
+     */
     String sizeField() default "";
 }

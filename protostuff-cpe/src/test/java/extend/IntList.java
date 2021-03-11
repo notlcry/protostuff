@@ -8,7 +8,7 @@ import java.util.List;
 
 public class IntList extends Foo{
 
-    @ArrayDetail(sizeType = ArraySizeType.FIXED, length = 5, size = 2)
+    @ArrayDetail(sizeType = ArraySizeType.FIXED, size = 2)
     private List<Integer> courses = new ArrayList<>();
     private float rate;
 

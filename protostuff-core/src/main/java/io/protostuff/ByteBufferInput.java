@@ -525,7 +525,7 @@ public final class ByteBufferInput implements Input
     }
 
     @Override
-    public <T> Collection<T> mergeObjectArray(T value, Schema<T> schema, int length, int size) throws IOException {
+    public <T> Collection<T> mergeObjectArray(T value, Schema<T> schema, int size) throws IOException {
         return null;
     }
 

@@ -317,17 +317,14 @@ public final class CpeInput implements Input {
     }
 
     @Override
-    public <T> Collection<T> mergeObjectArray(T value, final Schema<T> schema, int length, int size) throws IOException {
+    public <T> Collection<T> mergeObjectArray(T value, final Schema<T> schema, int size) throws IOException {
 //        throw new ProtostuffException("not support Object.");
 
         List<T> collect = new ArrayList<>();
 
         for (int i = 0; i < size; i++) {
             T  item = schema.newMessage();
-            byte[] buf = new byte[length];
-            buffer.get(buf);
-            ByteBuffer byteBuffer = ByteBuffer.wrap(buf);
-            CpeInput input = new CpeInput(byteBuffer);
+            CpeInput input = new CpeInput(buffer);
             schema.mergeFrom(input, item);
             if (!schema.isInitialized(item))
                 throw new UninitializedMessageException(item, schema);
