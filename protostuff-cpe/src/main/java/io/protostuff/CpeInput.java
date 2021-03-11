@@ -15,6 +15,7 @@
 package io.protostuff;
 
 import io.protostuff.StringSerializer.STRING;
+import io.protostuff.runtime.RuntimeSchema;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -42,7 +43,7 @@ public final class CpeInput implements Input {
 
 
     public CpeInput(ByteBuffer buffer) {
-        this.buffer = ByteBuffer.wrap(buffer.array());
+        this.buffer = buffer;
     }
 
     /**
@@ -112,6 +113,14 @@ public final class CpeInput implements Input {
 
     @Override
     public <T> int readFieldNumber(Schema<T> schema) throws IOException {
+        if (schema instanceof RuntimeSchema) {
+            int count = ((RuntimeSchema<T>) schema).getFieldCount();
+            if (fieldNumber > count) {
+                lastTag = 0;
+                return 0;
+            }
+        }
+
         if (!buffer.hasRemaining()) {
             lastTag = 0;
             return 0;
@@ -300,10 +309,7 @@ public final class CpeInput implements Input {
 
         if (value == null)
             value = schema.newMessage();
-        byte[] buf = new byte[5];
-        buffer.get(buf);
-        ByteBuffer byteBuffer = ByteBuffer.wrap(buf);
-        CpeInput input = new CpeInput(byteBuffer);
+        CpeInput input = new CpeInput(buffer);
         schema.mergeFrom(input, value);
         if (!schema.isInitialized(value))
             throw new UninitializedMessageException(value, schema);
@@ -376,5 +382,9 @@ public final class CpeInput implements Input {
     @Override
     public ByteBuffer readByteBuffer() throws IOException {
         return ByteBuffer.wrap(readByteArray());
+    }
+
+    public ByteBuffer getBuffer() {
+        return buffer;
     }
 }

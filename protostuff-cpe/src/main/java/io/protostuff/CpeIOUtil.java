@@ -197,9 +197,13 @@ public final class CpeIOUtil
 
     public static <T> void mergeFrom(byte[] buf, Object message, Schema<T> schema) throws IOException
     {
-//        ByteBuffer byteBuffer = ByteBuffer.allocate(buf.length);
-//        byteBuffer.put(buf);
         ByteBuffer byteBuffer = ByteBuffer.wrap(buf);
+        final CpeInput input = new CpeInput(byteBuffer);
+        schema.mergeFrom(input, (T) message);
+    }
+
+    public static <T> void mergeFrom(ByteBuffer byteBuffer, Object message, Schema<T> schema) throws IOException
+    {
         final CpeInput input = new CpeInput(byteBuffer);
         schema.mergeFrom(input, (T) message);
     }
